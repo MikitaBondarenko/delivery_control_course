@@ -16,7 +16,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public RestaurantServiceImpl(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
     }
-//r
+
 
     @Override
     public List<RestaurantDto> findAllRestaurant() {
