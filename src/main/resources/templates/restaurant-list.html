@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz//thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body class="d-flex flex-column h-100 bg-light">
+<main class="flex-shrink-0">
+    <!-- Projects Section-->
+    <section layout:fragment="body" class="py-5">
+        <div class="container px-5 mb-5">
+            <div th:if="${param.success}" class="alert alert-success">
+                Вы успешно зарегистрировались!
+            </div>
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Restaurants</span></h1>
+            </div>
+            <div class="row gx-5 justify-content-center">
+                <div>
+                    <form th:action="@{/restaurants-search}" class="form-inline my-2 my-lg-0 mb-3">
+                        <input name="query" class="form-control mr-sm-2 mb-5" type="search"
+                        placeholder="Поиск ресторана" aria-label="Search">
+                    </div>
+                <div th:each="restaurant :${restaurant}" class="col-lg-11 col-xl-9 col-xxl-8">
+                    <!-- Project Card 1-->
+                    <div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+                        <div class="card-body p-0">
+                            <div  class="d-flex align-items-center">
+                                <div class="p-5">
+                                    <h2 class="fw-bolder" th:text="${restaurant.restaurant_name}" ></h2>
+                                    <p th:text="${restaurant.restaurant_rating}"></p>
+                                    <p th:text="${restaurant.restaurant_address}"></p>
+                                    <p th:text="${restaurant.restaurant_phone}"></p>
+                                    <a class="btn btn-outline-dark btn-lg px-3 py-2 fs-6 fw-bolder mb-3"
+                                       th:href="'http://' +${restaurant.restaurant_site}" target="_blank">Сайт ресторана</a>
+                                    <a class="btn btn-outline-dark btn-lg px-3 py-2 fs-6 fw-bolder mb-3"
+                                       th:href="@{restaurants/{restaurant_id}(restaurant_id=${restaurant.id})}"
+                                       th:text="'Отзывов: '+${restaurant.reviewCount}"></a>
+                                </div>
+                                <img class="img-fluid" th:src="${restaurant.restaurant_imgurl}" width="400" height="300" alt="..." />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz//thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body class="d-flex flex-column h-100 bg-light">
+<main class="flex-shrink-0">
+  <!-- Projects Section-->
+  <section layout:fragment="body" class="py-5">
+    <div class="container px-5 mb-5">
+      <div class="text-center mb-5">
+        <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Отзывы</span></h1>
+      </div>
+      <div class="row gx-5 justify-content-center">
+        <div th:each="review :${reviews}" class="col-lg-11 col-xl-9 col-xxl-8">
+          <!-- Project Card 1-->
+          <div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+            <div class="card-body p-0">
+              <div  class="d-flex align-items-center">
+                <div class="p-5">
+                  <p th:text="'Написан:' +${review.updatedOn}"></p>
+                  <h2 class="fw-bolder" th:text="'☆' + ${review.rating} + '/5'" ></h2>
+                  <p th:text="'+ :' +${review.advantages}"></p>
+                  <p th:text="'- :' +${review.disadvantages}"></p>
+                  <a class="btn btn-outline-dark btn-lg px-3 py-2 fs-6 fw-bolder mb-3"
+                     th:href="@{/reviews/{review_id}(review_id=${review.id})}">Подробнее</a>
+                </div>
+                <img class="img-fluid" th:src="${review.review_imgurl}" width="400" height="300" alt="..." />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

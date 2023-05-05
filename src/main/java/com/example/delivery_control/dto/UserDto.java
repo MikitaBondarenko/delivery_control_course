@@ -1,8 +1,5 @@
 package com.example.delivery_control.dto;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,11 +7,13 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
-    private int id;
-    private String user_name;
-    private String user_surname;
-    private String user_address;
-    private String user_phone;
-    private int user_role;
+    private Long id;
+    private  String username;
+    private String password;
+    private String email;
+    private Boolean userRole;
+
 }

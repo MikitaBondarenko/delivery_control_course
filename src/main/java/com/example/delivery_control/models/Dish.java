@@ -11,14 +11,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="users")
-public class User {
+@Table
+public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String user_name;
-    private String user_surname;
-    private String user_address;
-    private String user_phone;
-    private int user_role;
+    private Long id;
+    private String name;
+    private double price;
+    private String dish_imgurl;
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name="restaurant_id", nullable = false)
+    private Restaurant restaurant;
+
 }

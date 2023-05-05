@@ -1,0 +1,60 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz//thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body class="d-flex flex-column bg-light">
+  <!-- Projects Section-->
+  <section layout:fragment="body" >
+    <!-- Page header with logo and tagline-->
+    <header class="py-5 bg-light border-bottom mb-4">
+      <div class="container">
+        <div class="text-center my-5">
+          <h1 class="fw-bolder">Ресторан</h1>
+          <p class="lead mb-0" th:text="${restaurant.restaurant_name}"> </p>
+        </div>
+      </div>
+    </header>
+    <!-- Page content-->
+    <div class="container">
+      <div class="row">
+        <!-- Blog entries-->
+        <div class="col-lg-8">
+          <!-- Featured blog post-->
+          <div class="card mb-4">
+            <p><img class="card-img-top" th:src="${restaurant.restaurant_imgurl}" alt="..." /></p>
+            <div class="card-body">
+              <div class="small text-muted"></div>
+              <h2 class="card-title">Информация</h2>
+              <p class="card-text" th:text="${restaurant.restaurant_address}"></p>
+              <p class="card-text" th:text="${restaurant.restaurant_phone}"></p>
+              <a class="btn btn-outline-primary" th:href="'http://'+ ${restaurant.restaurant_site}" target="_blank">Сайт ресторана</a>
+              <a class="btn btn-outline-dark"
+                 th:href="@{/restaurants/{restaurant_id}(restaurant_id=${restaurant.id})}">Отзывы ресторана</a>
+              <div th:if="${(user.id == restaurant.created_by.id) || user.userRole}">
+                <a class="btn btn-outline-dark"
+                   th:href="@{/restaurants/{restaurant_id}/edit(restaurant_id=${restaurant.id})}">Отредактировать</a>
+                <a class="btn btn-outline-primary" th:href="@{/restaurants/{restaurant_id}/delete(restaurant_id=${restaurant.id})}">Удалить запись</a>
+                <a class="btn btn-outline-primary" th:href="@{/dishes/{restaurant_id}/new(restaurant_id=${restaurant.id})}">Добавить блюдо</a>
+              </div>
+            </div>
+          </div>
+          <!-- Nested row for non-featured blog posts-->
+          <div class="row">
+            <div class="col-lg-6">
+              <!-- Blog post-->
+              <div th:each="dish: ${restaurant.dishDtoList}" class="card mb-4">
+                <p><img class="card-img-top" th:src="${dish.dish_imgurl}" width="300" height="400" alt="..." /></p>
+                <div class="card-body">
+                  <h2 th:text="'Цена: ' + ${dish.price} + ' руб'" class="card-title h4"></h2>
+                  <p th:text="'Название: ' +${dish.name}" class="card-text"></p>
+                  <p th:text="'Описание: '+${dish.description}" class="card-text"></p>
+                  <a class="btn btn-primary" th:href="@{/dishes/{dish_id}(dish_id=${dish.id})}">Подробнее</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

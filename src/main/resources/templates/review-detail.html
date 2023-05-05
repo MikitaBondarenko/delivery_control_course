@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultrag.net.nz//thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body class="d-flex flex-column bg-light">
+<!-- Projects Section-->
+<section layout:fragment="body" >
+  <!-- Page header with logo and tagline-->
+  <header class="py-5 bg-light border-bottom mb-4">
+    <div class="container">
+      <div class="text-center my-5">
+        <h1 class="fw-bolder">Отзыв</h1>
+      </div>
+    </div>
+  </header>
+  <!-- Page content-->
+  <div class="container">
+    <div class="row">
+      <!-- Blog entries-->
+      <div class="col-lg-8">
+        <!-- Featured blog post-->
+        <div class="card mb-4">
+          <p><img class="card-img-top" th:src="${review.review_imgurl}" alt="..." /></p>
+          <div class="card-body">
+            <div class="small text-muted"></div>
+            <h2 class="card-title">Информация</h2>
+            <p class="card-text" th:text="'☆' + ${review.rating} + '/5'"></p>
+            <p class="card-text" th:text="'Плюсы :'+${review.advantages}"></p>
+            <p class="card-text" th:text="'Минусы:' +${review.disadvantages}"></p>
+            <p class="card-text" th:text="'Комментарий :'+${review.comment}"></p>
+            <p th:text="'Написан: '+${review.created_by.username}" class="card-text"></p>
+            <p class="card-text" th:text="'Написан: '+${review.updatedOn}"></p>
+            <div th:if="${(user.id == review.created_by.id) || user.userRole}">
+              <a class="btn btn-outline-dark"
+                 th:href="@{/reviews/{review_id}/edit(review_id=${review.id})}">Отредактировать</a>
+              <a class="btn btn-outline-primary" th:href="@{/reviews/{review_id}/delete(review_id=${review.id})}">Удалить запись</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
