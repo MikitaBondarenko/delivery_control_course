@@ -30,7 +30,9 @@
                         <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">Меню</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
-                        <li><a class="dropdown-item" th:href="@{/restaurants/addNew}">Добавить ресторан</a></li>
+                        <div sec:authorize="principal.username eq 'admin'">
+                            <li><a class="dropdown-item" th:href="@{/restaurants/addNew}">Добавить ресторан</a></li>
+                        </div>
                         <li><a class="dropdown-item" th:href="@{/logout}">Выйти из аккаунта</a></li>
                     </ul>
                     </li>
