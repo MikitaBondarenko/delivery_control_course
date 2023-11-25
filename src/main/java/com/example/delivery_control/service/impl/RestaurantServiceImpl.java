@@ -78,7 +78,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void countAvgRatingsAndAmount(RestaurantDto restaurantDto) {
         List<ReviewDto> reviewDtoList = reviewService.findReviewByRestaurantId(restaurantDto.getId());
         if(reviewDtoList.isEmpty()){
-            restaurantDto.setRestaurant_rating("Без отзывов");
+            restaurantDto.setRestaurant_rating(0);
             restaurantDto.setReviewCount(0);
             return;
         }
@@ -87,17 +87,17 @@ public class RestaurantServiceImpl implements RestaurantService {
             avgTemp+=reviewDto.getRating();
         }
         if(avgTemp == 0){
-            restaurantDto.setRestaurant_rating("Без отзывов");
+            restaurantDto.setRestaurant_rating(0);
             return;
         }
        avgTemp=avgTemp/reviewDtoList.size();
         int starRating = (int) avgTemp;
-        StringBuilder stringBuilder = new StringBuilder();
-        for(int i=0; i<starRating; i++){
-            stringBuilder.append('☆');
-        }
-        String str = stringBuilder.toString();
-        restaurantDto.setRestaurant_rating(String.format("%s %.2f", str, avgTemp));
+//        StringBuilder stringBuilder = new StringBuilder();
+//        for(int i=0; i<starRating; i++){
+//            stringBuilder.append('☆');
+//        }
+//        String str = stringBuilder.toString();
+        restaurantDto.setRestaurant_rating(starRating);
         restaurantDto.setReviewCount(reviewDtoList.size());
     }
 

@@ -31,7 +31,7 @@ public class RestaurantDto {
     private UserEntity created_by;
     private List<ReviewDto> reviewDtoList;
     private List<DishDto> dishDtoList;
-    private String restaurant_rating;
+    private int restaurant_rating;
     private int reviewCount;
 }
 
