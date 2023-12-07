@@ -10831,32 +10831,22 @@ textarea.form-control-lg {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.portfolio-modal .modal-dialog {
-  margin: 1rem;
-  max-width: 100vw;
+.modal-body {
+  display: flex;
+  align-items: center;
 }
-.portfolio-modal .modal-content {
-  padding-top: 6rem;
-  padding-bottom: 6rem;
-  text-align: center;
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 2px solid #007bff; /* Цвет границы - синий, можно изменить на другой */
+  border-radius: 50%;
+  margin-right: 20px;
 }
-.portfolio-modal .modal-content h2, .portfolio-modal .modal-content .h2 {
-  font-size: 3rem;
-  line-height: 3rem;
-}
-.portfolio-modal .modal-content p.item-intro {
-  font-style: italic;
-  margin-bottom: 2rem;
-  font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
-.portfolio-modal .modal-content p {
-  margin-bottom: 2rem;
-}
-.portfolio-modal .modal-content ul.list-inline {
-  margin-bottom: 2rem;
-}
-.portfolio-modal .modal-content img {
-  margin-bottom: 2rem;
+
+.client-info {
+  max-width: 300px;
 }
 .portfolio-modal .close-modal {
   position: absolute;
@@ -10869,4 +10859,10 @@ textarea.form-control-lg {
 }
 .portfolio-modal .close-modal:hover {
   opacity: 0.3;
+}
+.userInf {
+  margin-bottom: 3px;
+  border: none; /* Изначально скрываем рамку */
+  outline: none; /* Убираем обводку при фокусе */
+  padding: 2px; /* Добавляем отступ */
 }

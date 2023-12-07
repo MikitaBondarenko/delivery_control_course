@@ -31,7 +31,6 @@ public class CustomUserDetails implements UserDetailsService {
                     user.getRoles().stream().map((role) -> new SimpleGrantedAuthority(role.getName()))
                             .collect(Collectors.toList())
             );
-
             return authUser;
         } else{
             throw new UsernameNotFoundException("Invalid Username or password");

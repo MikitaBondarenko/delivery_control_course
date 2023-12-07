@@ -5,3 +5,36 @@
 */
 // This file is intentionally blank
 // Use this file to add JavaScript to your project
+// Функция активации редактирования
+function enableEditing() {
+    var userInfInputs = document.querySelectorAll('.userInf');
+    var editButton = document.getElementById('editBtn');
+    var saveButton = document.getElementById('saveBtn');
+
+    // Разрешаем редактирование
+    userInfInputs.forEach(function (input) {
+        input.readOnly = false;
+        input.style.border = '1px solid #ccc'; // Показываем рамки
+    });
+
+    // Переключаем видимость кнопок
+    editButton.style.display = 'none';
+    saveButton.style.display = 'inline';
+}
+
+// Функция сохранения изменений
+function saveChanges() {
+    var userInfInputs = document.querySelectorAll('.userInf');
+    var editButton = document.getElementById('editBtn');
+    var saveButton = document.getElementById('saveBtn');
+
+    // Запрещаем редактирование
+    userInfInputs.forEach(function (input) {
+        input.readOnly = true;
+        input.style.border = 'none'; // Скрываем рамки
+    });
+
+    // Переключаем видимость кнопок
+    editButton.style.display = 'inline';
+    saveButton.style.display = 'none';
+}

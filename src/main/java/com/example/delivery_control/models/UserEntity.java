@@ -20,6 +20,11 @@ public class UserEntity
     private  String username;
     private String password;
     private String email;
+    private String surname;
+    private String firstname;
+    private String address;
+    private String avatarImg;
+    private String phone;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_roles",
