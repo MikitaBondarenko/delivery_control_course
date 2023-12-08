@@ -33,6 +33,13 @@ public class ReviewController {
     @GetMapping("/reviews/{restaurant_id}/new")
     public String createReviewForm(@PathVariable("restaurant_id") Long restaurant_id, Model model)
     {
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if(username != null){
+            user=userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         Review review = new Review();
         model.addAttribute("restaurant_id", restaurant_id);
         model.addAttribute("review", review);
@@ -55,6 +62,13 @@ public class ReviewController {
 
     @GetMapping("/reviews")
     public  String reviewList(Model model){
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if(username != null){
+            user=userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         List<ReviewDto> reviewDtoList = reviewService.findAllReviews();
         model.addAttribute("reviews", reviewDtoList);
         return "review-list";
@@ -76,6 +90,13 @@ public class ReviewController {
 
     @GetMapping("/reviews/{review_id}/edit")
     public String editReview(@PathVariable("review_id") long review_id, Model  model){
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if(username != null){
+            user=userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         ReviewDto reviewDto = reviewService.findByReviewId(review_id);
         model.addAttribute("review" , reviewDto);
         return "review-edit";

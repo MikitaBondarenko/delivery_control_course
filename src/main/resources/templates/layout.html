@@ -90,21 +90,27 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <form role="form"
+                  method="post"
+                  th:action="@{*/userInfoSave}"
+                  th:object="${user}">
             <div class="modal-body">
-                <img src="https://s.ura.news/760/images/news/upload/news/695/932/1052695932/835140_fayl_250x0_1049.787.0.0.jpg" alt="Фото профиля" class="profile-image">
+                <img th:src="${user.getAvatarImg()}" alt="Фото профиля" class="profile-image">
                 <div class="client-info">
-                    <input type="text" class="userInf" value="Иван" readonly>
-                    <input type="text" class="userInf" value="Иванов" readonly>
-                    <input type="text" class="userInf" value="ул. Примерная, 123" readonly>
-                    <input type="text" class="userInf" value="+7 123 456 7890" readonly>
+                    <input type="text" class="userInf" placeholder="Имя" th:field="*{surname}" readonly>
+                    <input type="text" class="userInf" placeholder="Фамилия" th:field="*{firstname}" readonly>
+                    <input type="text" class="userInf" placeholder="Адрес" th:field="*{address}" readonly>
+                    <input type="text" class="userInf" placeholder="Телефон" th:field="*{phone}" readonly>
+                    <input type="text" id="userImgUrl" class="userInf" placeholder="URL картинки" th:field="*{avatarImg}" style="display: none;" readonly>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" id="editBtn" onclick="enableEditing()" class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center">
                     <span class="bi bi-pencil " style="font-size: 20px;"></span>
                 </button>
-                <button id="saveBtn" onclick="saveChanges()" class="btn btn-outline-dark"  style="display: none;">Сохранить изменения</button>
+                <button id="saveBtn" type="submit" onclick="saveChanges()" class="btn btn-outline-dark"  style="display: none;">Сохранить изменения</button>
             </div>
+            </form>
         </div>
     </div>
 </div>

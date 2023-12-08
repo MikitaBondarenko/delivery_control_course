@@ -4,17 +4,22 @@ import com.example.delivery_control.Mapper.UserMapper;
 import com.example.delivery_control.Repository.RoleRepository;
 import com.example.delivery_control.Repository.UserRepository;
 import com.example.delivery_control.dto.RegistrationDto;
+import com.example.delivery_control.dto.RestaurantDto;
 import com.example.delivery_control.dto.UserDto;
+import com.example.delivery_control.models.Restaurant;
 import com.example.delivery_control.models.Role;
 import com.example.delivery_control.models.UserEntity;
+import com.example.delivery_control.security.SecurityUtill;
 import com.example.delivery_control.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
+
+import static com.example.delivery_control.Mapper.RestaurantMapper.mapToRestaurant;
+import static com.example.delivery_control.Mapper.UserMapper.mapToUser;
+
 @AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,6 +39,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUser(UserDto userDto) {
+        UserEntity user = mapToUser(userDto);
+        userRepository.save(user);
+    }
+
+
+    @Override
     public UserDto findByEmail(String email) {
         var user = userRepository.findByEmail(email);
 
@@ -41,7 +53,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
-        return UserMapper.mapToUserDro(user);
+        return UserMapper.mapToUserDto(user);
     }
 
     @Override
@@ -50,7 +62,7 @@ public class UserServiceImpl implements UserService {
         if(user == null){
             return null;
         }
-        UserDto userDto = UserMapper.mapToUserDro(user);
+        UserDto userDto = UserMapper.mapToUserDto(user);
         userDto.setUserRole(user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN")));
         return userDto;
     }

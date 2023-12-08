@@ -29,6 +29,13 @@ public class DishController {
     @GetMapping("/dishes/{restaurant_id}/new")
     public String createDishForm(@PathVariable("restaurant_id") Long restaurant_id, Model model)
     {
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if(username != null){
+            user=userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         Dish dish = new Dish();
         model.addAttribute("restaurant_id", restaurant_id);
         model.addAttribute("dish", dish);
@@ -65,6 +72,13 @@ public class DishController {
 
     @GetMapping("/dishes/{dish_id}/edit")
     public String editDish(@PathVariable("dish_id") long dish_id, Model  model){
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if(username != null){
+            user=userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         DishDto dishDto = dishService.findByDishId(dish_id);
         model.addAttribute("dish" , dishDto);
         return "dish-edit";

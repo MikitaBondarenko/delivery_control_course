@@ -15,5 +15,10 @@ public class UserDto {
     private String password;
     private String email;
     private Boolean userRole;
+    private String surname;
+    private String firstname;
+    private String address;
+    private String avatarImg;
+    private String phone;
 
 }

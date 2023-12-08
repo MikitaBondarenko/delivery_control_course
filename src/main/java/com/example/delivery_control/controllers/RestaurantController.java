@@ -26,6 +26,13 @@ public class RestaurantController {
 
     @GetMapping("/restaurants")
     public String listRestaurant(Model model){
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if(username != null){
+            user=userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         List<RestaurantDto> restaurantDtoList = restaurantService.findAllRestaurant();
         model.addAttribute("restaurant", restaurantDtoList);
         return "restaurant-list";
@@ -34,6 +41,13 @@ public class RestaurantController {
     @GetMapping("/restaurants/addNew")
     public String createRestaurantForm(Model model)
     {
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if(username != null){
+            user=userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         RestaurantDto restaurant = new RestaurantDto();
         model.addAttribute("restaurant", restaurant);
         return "restaurant-create";
@@ -52,7 +66,13 @@ public class RestaurantController {
     @GetMapping("/restaurants/{restaurant_id}/edit")
     public String editRestaurant(@PathVariable("restaurant_id") long restaurant_id, Model  model){
         RestaurantDto restaurant = restaurantService.findRestaurantById(restaurant_id);
-
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if(username != null){
+            user=userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         model.addAttribute("restaurant", restaurant);
         return "restaurant-edit";
     }
@@ -114,6 +134,13 @@ public class RestaurantController {
 
     @GetMapping("/chart")
     public String chartOfRestaurants(Model model) {
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if(username != null){
+            user=userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         model.addAttribute("chartData", restaurantService.restaurantChartData());
         return "chart";
     }

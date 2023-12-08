@@ -10,13 +10,15 @@ function enableEditing() {
     var userInfInputs = document.querySelectorAll('.userInf');
     var editButton = document.getElementById('editBtn');
     var saveButton = document.getElementById('saveBtn');
+    var userImgUrlInput = document.getElementById('userImgUrl');
 
     // Разрешаем редактирование
     userInfInputs.forEach(function (input) {
         input.readOnly = false;
         input.style.border = '1px solid #ccc'; // Показываем рамки
     });
-
+    userImgUrlInput.style.display = 'inline';
+    userImgUrlInput.value="";
     // Переключаем видимость кнопок
     editButton.style.display = 'none';
     saveButton.style.display = 'inline';
@@ -27,7 +29,8 @@ function saveChanges() {
     var userInfInputs = document.querySelectorAll('.userInf');
     var editButton = document.getElementById('editBtn');
     var saveButton = document.getElementById('saveBtn');
-
+    var userImgUrlInput = document.getElementById('userImgUrl');
+    userImgUrlInput.style.display = 'none';
     // Запрещаем редактирование
     userInfInputs.forEach(function (input) {
         input.readOnly = true;
