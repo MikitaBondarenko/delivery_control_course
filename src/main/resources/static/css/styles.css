@@ -12529,3 +12529,27 @@ textarea.form-control-lg {
     background-color: #0056b3;
 }
 
+.form-inline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+}
+
+.checkbox-container:hover {
+    background-color: #f0f0f0; /* Цвет фона при наведении */
+    cursor: pointer; /* Изменение курсора при наведении */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Тень при наведении */
+}
+
+.checkbox-container.hidden-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+
+

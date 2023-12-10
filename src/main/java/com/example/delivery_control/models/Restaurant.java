@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table (name = "restaurant")
+@Table(name = "restaurant")
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +26,9 @@ public class Restaurant {
     private String restaurant_phone;
     private String restaurant_imgurl;
     private String restaurant_site;
+    private String restaurant_type;
     @ManyToOne
-    @JoinColumn(name="created_by", nullable = false)
+    @JoinColumn(name = "created_by", nullable = false)
     private UserEntity created_by;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)

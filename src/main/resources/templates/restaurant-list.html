@@ -13,9 +13,42 @@
                 <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Restaurants</span></h1>
             </div>
             <div>
-                <form th:action="@{/restaurants-search}" class="form-inline my-2 my-lg-0 mb-3 justify-content-center">
-                    <input name="query" class="form-control mr-sm-2 mb-5 w-75" type="search"
+                <form th:action="@{/restaurants-search}" class="form-inline my-2 my-lg-0 mb-1 justify-content-center">
+                    <input name="query" class="form-control mr-sm-2 mb-2 w-75" type="search"
                            placeholder="Поиск ресторана" aria-label="Search">
+                </form>
+            </div>
+            <div>
+                <form th:action="@{/restaurants-searchByType}"
+                      class="form-inline my-2 my-lg-0 mb-3 justify-content-center">
+                    <div class="checkbox-container text-gradient hidden-checkbox">
+                        <input type="checkbox" id="georgia" name="category" value="Грузия">
+                        <label for="georgia">Грузия</label>
+                    </div>
+                    <div class="checkbox-container text-gradient hidden-checkbox">
+                        <input type="checkbox" id="fastfood" name="category" value="Фастфуд">
+                        <label for="fastfood">Фастфуд</label>
+                    </div>
+                    <div class="checkbox-container text-gradient hidden-checkbox">
+                        <input type="checkbox" id="italy" name="category" value="Италия">
+                        <label for="italy">Италия</label>
+                    </div>
+                    <div class="checkbox-container text-gradient hidden-checkbox">
+                        <input type="checkbox" id="asia" name="category" value="Азия">
+                        <label for="asia">Азия</label>
+                    </div>
+                    <div class="checkbox-container text-gradient hidden-checkbox">
+                        <input type="checkbox" id="baking" name="category" value="Выпечка">
+                        <label for="baking">Выпечка</label>
+                    </div>
+                    <div class="checkbox-container text-gradient hidden-checkbox">
+                        <input type="checkbox" id="desserts" name="category" value="Десерты">
+                        <label for="desserts">Десерты</label>
+                    </div>
+                    <button type="submit"
+                            class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center">
+                        <span class="bi bi-search" style="font-size: 20px;"></span>
+                    </button>
                 </form>
             </div>
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center my-5">
@@ -34,7 +67,7 @@
                                 <h5 class="fw-bolder" th:text="${restaurant.restaurant_name}"></h5>
                                 <!-- Product reviews-->
                                 <div th:if="${restaurant.restaurant_rating == 0}"
-                                     class="d-flex justify-content-center small text-warning mb-2">
+                                     class="d-flex justify-content-center small text-warning">
                                     <p>Отзывов нет</p>
                                 </div>
                                 <div th:if="${restaurant.restaurant_rating > 0}"
@@ -43,9 +76,7 @@
                                         <div class="bi-star-fill"></div>
                                     </div>
                                 </div>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">$20.00</span>
-                                $18.00
+                                <p th:text="${restaurant.restaurant_type}"></p>
                             </div>
                         </div>
                         <!-- Product actions-->

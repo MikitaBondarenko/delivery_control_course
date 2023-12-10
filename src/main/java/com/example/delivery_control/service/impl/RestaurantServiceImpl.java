@@ -11,8 +11,6 @@ import com.example.delivery_control.security.SecurityUtill;
 import com.example.delivery_control.service.RestaurantService;
 import com.example.delivery_control.service.ReviewService;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -73,6 +71,16 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public List<RestaurantDto> searchRestaurant(String query) {
         List<Restaurant> restaurants = restaurantRepository.searchRestaurant(query);
+        var restaurantDtoList = restaurants.stream().map(restaurant -> mapToRestaurantDto(restaurant)).collect(Collectors.toList());
+        for (var restaurantDto : restaurantDtoList) {
+            countAvgRatingsAndAmount(restaurantDto);
+        }
+        return restaurantDtoList;
+    }
+
+    @Override
+    public List<RestaurantDto> searchRestaurantByType(String type) {
+        List<Restaurant> restaurants = restaurantRepository.searchRestaurantByType(type);
         var restaurantDtoList = restaurants.stream().map(restaurant -> mapToRestaurantDto(restaurant)).collect(Collectors.toList());
         for (var restaurantDto : restaurantDtoList) {
             countAvgRatingsAndAmount(restaurantDto);

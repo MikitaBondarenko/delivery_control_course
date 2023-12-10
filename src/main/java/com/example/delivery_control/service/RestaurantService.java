@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface RestaurantService {
     List<RestaurantDto> findAllRestaurant();
+
     Restaurant saveRestaurant(RestaurantDto restaurantDto);
 
     RestaurantDto findRestaurantById(long restaurant_id);
@@ -14,8 +15,13 @@ public interface RestaurantService {
     void updateRestaurant(RestaurantDto restaurantDto);
 
     void delete(Long restaurantId);
+
     List<RestaurantDto> searchRestaurant(String query);
+
+    List<RestaurantDto> searchRestaurantByType(String type);
+
     void countAvgRatingsAndAmount(RestaurantDto restaurantDto);
+
     double countAvgForChart(RestaurantDto restaurantDto);
 
     List<List<Object>> restaurantChartData();

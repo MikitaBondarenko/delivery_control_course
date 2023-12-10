@@ -140,6 +140,20 @@ public class RestaurantController {
         return "restaurant-list";
     }
 
+    @GetMapping("/restaurants-searchByType")
+    public String searchRestaurantBytype(@RequestParam(value = "category") String category, Model model) {
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if (username != null) {
+            user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
+        List<RestaurantDto> restaurantDtoList = restaurantService.searchRestaurantByType(category);
+        model.addAttribute("restaurant", restaurantDtoList);
+        return "restaurant-list";
+    }
+
     @GetMapping("/chart")
     public String chartOfRestaurants(Model model) {
         UserDto user = new UserDto();

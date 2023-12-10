@@ -29,6 +29,8 @@ public class RestaurantDto {
     private String restaurant_imgurl;
     @NotEmpty(message = "Должен быть указан сайт")
     private String restaurant_site;
+    @NotEmpty(message = "Должен быть указан тип")
+    private String restaurant_type;
     private UserEntity created_by;
     private List<ReviewDto> reviewDtoList;
     private List<DishDto> dishDtoList;
