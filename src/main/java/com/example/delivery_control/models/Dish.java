@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +25,9 @@ public class Dish {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="restaurant_id", nullable = false)
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
+    @ManyToMany(mappedBy = "dishesList")
+    private List<CartItem> cartItems = new ArrayList<>();
 }
