@@ -18,7 +18,7 @@ function enableEditing() {
         input.style.border = '1px solid #ccc'; // Показываем рамки
     });
     userImgUrlInput.style.display = 'inline';
-    userImgUrlInput.value="";
+    userImgUrlInput.value = "";
     // Переключаем видимость кнопок
     editButton.style.display = 'none';
     saveButton.style.display = 'inline';
@@ -40,4 +40,18 @@ function saveChanges() {
     // Переключаем видимость кнопок
     editButton.style.display = 'inline';
     saveButton.style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var menuListBtn = document.getElementById('menuList');
+    var submenuList = document.getElementById('submenuList');
+
+    menuListBtn.addEventListener('click', function () {
+        submenuList.classList.toggle('d-none');
+    });
+});
+
+function profileIsEmpty() {
+    alert("Чтобы оставить отзыв, вы должны заполнить данные в профиле!");
+    
 }

@@ -19,24 +19,26 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
 public class ReviewController {
     private ReviewService reviewService;
     private UserService userService;
+
     @Autowired
     public ReviewController(ReviewService reviewService, UserService userService) {
         this.reviewService = reviewService;
         this.userService = userService;
     }
+
     @GetMapping("/reviews/{restaurant_id}/new")
-    public String createReviewForm(@PathVariable("restaurant_id") Long restaurant_id, Model model)
-    {
+    public String createReviewForm(@PathVariable("restaurant_id") Long restaurant_id, Model model) {
         UserDto user = new UserDto();
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
@@ -49,10 +51,9 @@ public class ReviewController {
     @PostMapping("/reviews/{restaurant_id}")
     public String createReview(@PathVariable("restaurant_id") Long restaurant_id,
                                @Valid
-                               @ModelAttribute("review")ReviewDto reviewDto,
-                               BindingResult result, Model model)
-    {
-        if(result.hasErrors()){
+                               @ModelAttribute("review") ReviewDto reviewDto,
+                               BindingResult result, Model model) {
+        if (result.hasErrors()) {
             model.addAttribute("review", reviewDto);
             return "review-create";
         }
@@ -61,11 +62,11 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews")
-    public  String reviewList(Model model){
+    public String reviewList(Model model) {
         UserDto user = new UserDto();
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
@@ -75,39 +76,42 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/{review_id}")
-    public String viewReview(@PathVariable("review_id") Long review_id, Model model){
+    public String viewReview(@PathVariable("review_id") Long review_id, Model model) {
         UserDto user = new UserDto();
-        ReviewDto reviewDto =  reviewService.findByReviewId(review_id);
+        ReviewDto reviewDto = reviewService.findByReviewId(review_id);
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedDateTime = reviewDto.getUpdatedOn().format(formatter);
+        model.addAttribute("formattedDateTime", formattedDateTime);
         model.addAttribute("review", reviewDto);
         return "review-detail";
     }
 
     @GetMapping("/reviews/{review_id}/edit")
-    public String editReview(@PathVariable("review_id") long review_id, Model  model){
+    public String editReview(@PathVariable("review_id") long review_id, Model model) {
         UserDto user = new UserDto();
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
         ReviewDto reviewDto = reviewService.findByReviewId(review_id);
-        model.addAttribute("review" , reviewDto);
+        model.addAttribute("review", reviewDto);
         return "review-edit";
     }
 
     @PostMapping("/reviews/{review_id}/edit")
     public String updateReview(@PathVariable("review_id") long review_id,
-                                   @Valid
-                                   @ModelAttribute("review") ReviewDto reviewDto,
-                                   BindingResult result, Model model){
-        if(result.hasErrors()){
+                               @Valid
+                               @ModelAttribute("review") ReviewDto reviewDto,
+                               BindingResult result, Model model) {
+        if (result.hasErrors()) {
             model.addAttribute("review", reviewDto);
             return "review-edit";
         }
@@ -119,11 +123,11 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/{review_id}/delete")
-    public  String deleteReview(@PathVariable("review_id") long review_id,
-                                @ModelAttribute("review") ReviewDto reviewDto){
+    public String deleteReview(@PathVariable("review_id") long review_id,
+                               @ModelAttribute("review") ReviewDto reviewDto) {
         reviewDto = reviewService.findByReviewId(review_id);
         reviewService.deleteReview(review_id);
-        return  "redirect:/restaurants/" + reviewDto.getRestaurant().getId();
+        return "redirect:/restaurants/" + reviewDto.getRestaurant().getId();
     }
 }
 

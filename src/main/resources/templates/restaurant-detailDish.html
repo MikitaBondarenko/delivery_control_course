@@ -2,59 +2,100 @@
       xmlns:layout="http://www.ultrag.net.nz//thymeleaf/layout"
       layout:decorate="~{layout}">
 <body class="d-flex flex-column bg-light">
-  <!-- Projects Section-->
-  <section layout:fragment="body" >
+<!-- Projects Section-->
+<section layout:fragment="body">
     <!-- Page header with logo and tagline-->
     <header class="py-5 bg-light border-bottom mb-4">
-      <div class="container">
-        <div class="text-center my-5">
-          <h1 class="fw-bolder">Ресторан</h1>
-          <p class="lead mb-0" th:text="${restaurant.restaurant_name}"> </p>
+        <div class="container">
+            <div class="text-center my-3">
+                <h1 class="fw-bolder text-gradient ">Ресторан</h1>
+                <p class="lead mb-0 text-gradient fs-4" th:text="${restaurant.restaurant_name}"></p>
+                <div class="d-flex justify-content-center small text-warning my-3">
+                    <div th:each="iteration : ${#numbers.sequence(1, restaurant.restaurant_rating)}">
+                        <div class="bi-star-fill"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </header>
     <!-- Page content-->
-    <div class="container">
-      <div class="row">
-        <!-- Blog entries-->
-        <div class="col-lg-8">
-          <!-- Featured blog post-->
-          <div class="card mb-4">
-            <p><img class="card-img-top" th:src="${restaurant.restaurant_imgurl}" alt="..." /></p>
-            <div class="card-body">
-              <div class="small text-muted"></div>
-              <h2 class="card-title">Информация</h2>
-              <p class="card-text" th:text="${restaurant.restaurant_address}"></p>
-              <p class="card-text" th:text="${restaurant.restaurant_phone}"></p>
-              <a class="btn btn-outline-primary" th:href="'http://'+ ${restaurant.restaurant_site}" target="_blank">Сайт ресторана</a>
-              <a class="btn btn-outline-dark"
-                 th:href="@{/restaurants/{restaurant_id}(restaurant_id=${restaurant.id})}">Отзывы ресторана</a>
-              <div th:if="${(user.id == restaurant.created_by.id) || user.userRole}">
-                <a class="btn btn-outline-dark"
-                   th:href="@{/restaurants/{restaurant_id}/edit(restaurant_id=${restaurant.id})}">Отредактировать</a>
-                <a class="btn btn-outline-primary" th:href="@{/restaurants/{restaurant_id}/delete(restaurant_id=${restaurant.id})}">Удалить запись</a>
-                <a class="btn btn-outline-primary" th:href="@{/dishes/{restaurant_id}/new(restaurant_id=${restaurant.id})}">Добавить блюдо</a>
-              </div>
-            </div>
-          </div>
-          <!-- Nested row for non-featured blog posts-->
-          <div class="row">
-            <div class="col-lg-6">
-              <!-- Blog post-->
-              <div th:each="dish: ${restaurant.dishDtoList}" class="card mb-4">
-                <p><img class="card-img-top" th:src="${dish.dish_imgurl}" width="300" height="400" alt="..." /></p>
-                <div class="card-body">
-                  <h2 th:text="'Цена: ' + ${dish.price} + ' руб'" class="card-title h4"></h2>
-                  <p th:text="'Название: ' +${dish.name}" class="card-text"></p>
-                  <p th:text="'Описание: '+${dish.description}" class="card-text"></p>
-                  <a class="btn btn-primary" th:href="@{/dishes/{dish_id}(dish_id=${dish.id})}">Подробнее</a>
+    <div class="container  my-5">
+        <div class="row gx-5 justify-content-center">
+            <!-- Blog entries-->
+            <div class="col-lg-11 col-xl-9 col-xxl-8">
+                <!-- Featured blog post-->
+                <div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+                    <div class="card-body p-0">
+                        <div class="d-flex align-items-center">
+                            <div class="p-5">
+                                <h2 class="fw-bolder ">Информация</h2>
+                                <p class="card-text" th:text="${restaurant.restaurant_address}"></p>
+                                <p class="card-text" th:text="${restaurant.restaurant_phone}"></p>
+                                <div>
+                                    <button type="button" id="menuList"
+                                            class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center">
+                                        <span class="bi bi-arrow-right" style="font-size: 20px;"></span>
+                                    </button>
+                                    <div id="submenuList" class="d-none bg-light p-3 shadow"
+                                         style="margin-top: 10px; border-radius: 10px;">
+                                        <a class="btn btn-outline-dark btn-sm"
+                                           th:href="'http://'+ ${restaurant.restaurant_site}" target="_blank">Сайт
+                                            ресторана</a>
+                                        <a class="btn btn-outline-dark btn-sm"
+                                           th:href="@{/restaurants/{restaurant_id}(restaurant_id=${restaurant.id})}"
+                                           th:text="'Отзывов: '+${restaurant.reviewCount}"
+                                        ></a>
+                                        <div th:if="${(user.id == restaurant.created_by.id) || user.userRole}">
+                                            <a class="btn btn-outline-dark btn-sm"
+                                               th:href="@{/restaurants/{restaurant_id}/edit(restaurant_id=${restaurant.id})}">Отредактировать</a>
+                                            <a class="btn btn-outline-dark btn-sm"
+                                               th:href="@{/restaurants/{restaurant_id}/delete(restaurant_id=${restaurant.id})}">Удалить
+                                                запись</a>
+                                            <a class="btn btn-outline-dark btn-sm"
+                                               th:href="@{/dishes/{restaurant_id}/new(restaurant_id=${restaurant.id})}">Добавить
+                                                блюдо</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <img class="img-fluid" th:src="${restaurant.restaurant_imgurl}" alt="..."/>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
+            <!-- Nested row for non-featured blog posts-->
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 mb-5 justify-content-center">
+                <!-- Blog post-->
+                <div th:each="dish: ${restaurant.dishDtoList}" class="col mb-5">
+                    <div class="card h-100  overflow-hidden shadow rounded-4 border-0  ">
+                        <!-- Sale badge-->
+                        <div class="badge bg-dark text-white position-absolute"
+                             style="top: 0.5rem; right: 0.5rem">
+                            Sale
+                        </div>
+                        <img class="card-img-top" th:src="${dish.dish_imgurl}" alt="..."/>
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <h5 th:text="'Название: ' +${dish.name}" class="fw-bolder"></h5>
+                                <!-- Product price-->
+                                <span class="text-muted"
+                                      th:text="'Цена: ' + ${dish.price} + ' руб'"></span>
+                            </div>
+                        </div>
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center">
+                                <a class="btn btn-outline-dark mt-auto"
+                                   th:href="@{/dishes/{dish_id}(dish_id=${dish.id})}">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+
     </div>
-  </section>
+</section>
 </body>
 </html>

@@ -3,42 +3,71 @@
       layout:decorate="~{layout}">
 <body class="d-flex flex-column bg-light">
 <!-- Projects Section-->
-<section layout:fragment="body" >
-  <!-- Page header with logo and tagline-->
-  <header class="py-5 bg-light border-bottom mb-4">
-    <div class="container">
-      <div class="text-center my-5">
-        <h1 class="fw-bolder">Отзыв</h1>
-      </div>
-    </div>
-  </header>
-  <!-- Page content-->
-  <div class="container">
-    <div class="row">
-      <!-- Blog entries-->
-      <div class="col-lg-8">
-        <!-- Featured blog post-->
-        <div class="card mb-4">
-          <p><img class="card-img-top" th:src="${review.review_imgurl}" alt="..." /></p>
-          <div class="card-body">
-            <div class="small text-muted"></div>
-            <h2 class="card-title">Информация</h2>
-            <p class="card-text" th:text="'☆' + ${review.rating} + '/5'"></p>
-            <p class="card-text" th:text="'Плюсы :'+${review.advantages}"></p>
-            <p class="card-text" th:text="'Минусы:' +${review.disadvantages}"></p>
-            <p class="card-text" th:text="'Комментарий :'+${review.comment}"></p>
-            <p th:text="'Написан: '+${review.created_by.username}" class="card-text"></p>
-            <p class="card-text" th:text="'Написан: '+${review.updatedOn}"></p>
-            <div th:if="${(user.id == review.created_by.id) || user.userRole}">
-              <a class="btn btn-outline-dark"
-                 th:href="@{/reviews/{review_id}/edit(review_id=${review.id})}">Отредактировать</a>
-              <a class="btn btn-outline-primary" th:href="@{/reviews/{review_id}/delete(review_id=${review.id})}">Удалить запись</a>
+<section layout:fragment="body">
+    <!-- Page header with logo and tagline-->
+    <header class="py-5 bg-light border-bottom mb-4">
+        <div class="container">
+            <div class="text-center my-5">
+                <h1 class="fw-bolder text-gradient">Отзыв</h1>
             </div>
-          </div>
         </div>
-      </div>
+    </header>
+    <!-- Page content-->
+    <div class="container my-5">
+        <div class="row gx-5 justify-content-center">
+            <!-- Blog entries-->
+            <div class="col-lg-11 col-xl-9 col-xxl-8">
+                <!-- Featured blog post-->
+                <div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+                    <p><img class="card-img-top img-fluid" th:src="${review.review_imgurl}" alt="..."/></p>
+                    <div class="card-body">
+                        <div class="small text-muted"></div>
+                        <h2 class="card-title text-center">Информация</h2>
+                        <div class="d-flex justify-content-center small text-warning my-3">
+                            <div th:each="iteration : ${#numbers.sequence(1, review.rating)}">
+                                <div class="bi-star-fill"></div>
+                            </div>
+                        </div>
+                        <div class="advantages mb-2 font-weight-bold col-8 text-left"
+                             th:text="'Ресторан: ' + ${review.restaurant.restaurant_name}"></div>
+                        <div class="advantages mb-2 font-weight-bold col-8 text-left">Достоинства:</div>
+                        <div class="advantages mb-2 text-justify col-8"
+                             th:text="${review.advantages}"></div>
+                        <div class="disadvantages mb-2 font-weight-bold col-8 text-left">Недостатки:</div>
+                        <div class="disadvantages mb-2 text-justify col-8"
+                             th:text="${review.disadvantages}"></div>
+                        <div class="disadvantages mb-2 font-weight-bold col-8 text-left">Комментарий:</div>
+                        <div class="disadvantages mb-2 text-justify col-8"
+                             th:text="${review.comment}"></div>
+                        <hr class="col-8 my-2">
+                        <div class="d-flex flex-row profile pt-2 mt-auto">
+                            <img th:src="${review.created_by.avatarImg}" alt="" class="rounded-circle">
+                            <div class="d-flex flex-column pl-2 col-8">
+                                <div class="name">
+                                            <span th:text="'Написан: ' + ${review.created_by.firstname + ' ' + review.created_by.surname}"
+                                                  class="mr-1"></span>
+                                </div>
+                                <p th:text="${review.created_by.email}" class="text-muted designation"></p>
+                                <p class="card-text" th:text="${formattedDateTime}"></p>
+                            </div>
+                            <div th:if="${(user.id == review.created_by.id) || user.userRole}">
+                                <button type="button" id="menuList"
+                                        class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center">
+                                    <span class="bi bi-arrow-right" style="font-size: 20px;"></span>
+                                </button>
+                                <div id="submenuList" class="d-none bg-light p-3 shadow"
+                                     style="margin-top: 10px; border-radius: 10px;">
+                                 <a class="btn btn-outline-dark btn-sm"
+                                     th:href="@{/reviews/{review_id}/edit(review_id=${review.id})}">Отредактировать</a>
+                                <a class="btn btn-outline-dark btn-sm"
+                                    th:href="@{/reviews/{review_id}/delete(review_id=${review.id})}">Удалить запись</a>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 </body>
 </html>

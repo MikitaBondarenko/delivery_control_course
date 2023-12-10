@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import static com.example.delivery_control.Mapper.RestaurantMapper.mapToRestaurant;
 import static com.example.delivery_control.Mapper.RestaurantMapper.mapToRestaurantDto;
+
 @AllArgsConstructor
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
@@ -32,11 +33,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     public List<RestaurantDto> findAllRestaurant() {
         List<Restaurant> restaurants = restaurantRepository.findAll();
         var restaurantDtoList = restaurants.stream().map(RestaurantMapper::mapToRestaurantDto).toList();
-        for( var restaurantDto : restaurantDtoList)
-        {
+        for (var restaurantDto : restaurantDtoList) {
             countAvgRatingsAndAmount(restaurantDto);
         }
-        return  restaurantDtoList;
+        return restaurantDtoList;
     }
 
     @Override
@@ -51,7 +51,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public RestaurantDto findRestaurantById(long restaurant_id) {
         Restaurant restaurant = restaurantRepository.findById(restaurant_id).get();
-        return mapToRestaurantDto(restaurant);
+        RestaurantDto restaurantDto = mapToRestaurantDto(restaurant);
+        countAvgRatingsAndAmount(restaurantDto);
+        return restaurantDto;
     }
 
     @Override
@@ -71,26 +73,30 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public List<RestaurantDto> searchRestaurant(String query) {
         List<Restaurant> restaurants = restaurantRepository.searchRestaurant(query);
-        return restaurants.stream().map(restaurant -> mapToRestaurantDto(restaurant)).collect(Collectors.toList());
+        var restaurantDtoList = restaurants.stream().map(restaurant -> mapToRestaurantDto(restaurant)).collect(Collectors.toList());
+        for (var restaurantDto : restaurantDtoList) {
+            countAvgRatingsAndAmount(restaurantDto);
+        }
+        return restaurantDtoList;
     }
 
     @Override
     public void countAvgRatingsAndAmount(RestaurantDto restaurantDto) {
         List<ReviewDto> reviewDtoList = reviewService.findReviewByRestaurantId(restaurantDto.getId());
-        if(reviewDtoList.isEmpty()){
+        if (reviewDtoList.isEmpty()) {
             restaurantDto.setRestaurant_rating(0);
             restaurantDto.setReviewCount(0);
             return;
         }
-        double avgTemp=0;
-        for ( var reviewDto : reviewDtoList ){
-            avgTemp+=reviewDto.getRating();
+        double avgTemp = 0;
+        for (var reviewDto : reviewDtoList) {
+            avgTemp += reviewDto.getRating();
         }
-        if(avgTemp == 0){
+        if (avgTemp == 0) {
             restaurantDto.setRestaurant_rating(0);
             return;
         }
-       avgTemp=avgTemp/reviewDtoList.size();
+        avgTemp = avgTemp / reviewDtoList.size();
         int starRating = (int) avgTemp;
 //        StringBuilder stringBuilder = new StringBuilder();
 //        for(int i=0; i<starRating; i++){
@@ -104,28 +110,27 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public double countAvgForChart(RestaurantDto restaurantDto) {
         List<ReviewDto> reviewDtoList = reviewService.findReviewByRestaurantId(restaurantDto.getId());
-        if(reviewDtoList.isEmpty()){
+        if (reviewDtoList.isEmpty()) {
             return 0;
         }
-        double avgTemp=0;
-        for ( var reviewDto : reviewDtoList ){
-            avgTemp+=reviewDto.getRating();
+        double avgTemp = 0;
+        for (var reviewDto : reviewDtoList) {
+            avgTemp += reviewDto.getRating();
         }
-        if(avgTemp == 0){
+        if (avgTemp == 0) {
             return 0;
         }
-        avgTemp=avgTemp/reviewDtoList.size();
+        avgTemp = avgTemp / reviewDtoList.size();
         int starRating = (int) avgTemp;
         return avgTemp;
     }
 
     @Override
     public List<List<Object>> restaurantChartData() {
-        List<List<Object>> objectList= new ArrayList<>();
+        List<List<Object>> objectList = new ArrayList<>();
         List<Restaurant> restaurants = restaurantRepository.findAll();
         var restaurantDtoList = restaurants.stream().map(RestaurantMapper::mapToRestaurantDto).toList();
-        for( var restaurantDto : restaurantDtoList)
-        {
+        for (var restaurantDto : restaurantDtoList) {
             objectList.add(List.of(restaurantDto.getRestaurant_name(), countAvgForChart(restaurantDto)));
         }
         return objectList;

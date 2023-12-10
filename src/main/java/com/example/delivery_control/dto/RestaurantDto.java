@@ -25,6 +25,7 @@ public class RestaurantDto {
     private String restaurant_address;
     @NotEmpty(message = "Должен быть указан телефон")
     private String restaurant_phone;
+    @NotEmpty(message = "Должна быть фотография")
     private String restaurant_imgurl;
     @NotEmpty(message = "Должен быть указан сайт")
     private String restaurant_site;

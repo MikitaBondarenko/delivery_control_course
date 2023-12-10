@@ -18,6 +18,7 @@ public class DishDto {
     @NotEmpty(message = "Введите имя блюда!")
     private String name;
     private double price;
+    @NotEmpty(message = "Введите фото блюда!")
     private String dish_imgurl;
     @NotEmpty(message = "Введите описание блюда!")
     private String description;

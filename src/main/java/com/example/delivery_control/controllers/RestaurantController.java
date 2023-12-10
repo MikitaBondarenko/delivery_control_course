@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @AllArgsConstructor
 @Controller
 @Data
@@ -25,11 +26,11 @@ public class RestaurantController {
 
 
     @GetMapping("/restaurants")
-    public String listRestaurant(Model model){
+    public String listRestaurant(Model model) {
         UserDto user = new UserDto();
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
@@ -39,12 +40,11 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurants/addNew")
-    public String createRestaurantForm(Model model)
-    {
+    public String createRestaurantForm(Model model) {
         UserDto user = new UserDto();
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
@@ -52,10 +52,11 @@ public class RestaurantController {
         model.addAttribute("restaurant", restaurant);
         return "restaurant-create";
     }
+
     @PostMapping("/restaurants/addNew")
     public String saveRestaurant(@Valid @ModelAttribute("restaurant") RestaurantDto restaurantDto,
-                                 BindingResult result, Model model){
-        if(result.hasErrors()){
+                                 BindingResult result, Model model) {
+        if (result.hasErrors()) {
             model.addAttribute("restaurant", restaurantDto);
             return "restaurant-create";
         }
@@ -64,12 +65,12 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurants/{restaurant_id}/edit")
-    public String editRestaurant(@PathVariable("restaurant_id") long restaurant_id, Model  model){
+    public String editRestaurant(@PathVariable("restaurant_id") long restaurant_id, Model model) {
         RestaurantDto restaurant = restaurantService.findRestaurantById(restaurant_id);
         UserDto user = new UserDto();
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
@@ -81,8 +82,8 @@ public class RestaurantController {
     public String updateRestaurant(@PathVariable("restaurant_id") long restaurant_id,
                                    @Valid
                                    @ModelAttribute("restaurant") RestaurantDto restaurantDto,
-                                   BindingResult result, Model model){
-        if(result.hasErrors()){
+                                   BindingResult result, Model model) {
+        if (result.hasErrors()) {
             model.addAttribute("restaurant", restaurantDto);
             return "restaurant-edit";
         }
@@ -92,25 +93,26 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurants/{restaurant_id}")
-    public String restaurantDetail(@PathVariable("restaurant_id") long restaurant_id, Model model){
+    public String restaurantDetail(@PathVariable("restaurant_id") long restaurant_id, Model model) {
         UserDto user = new UserDto();
         RestaurantDto restaurantDto = restaurantService.findRestaurantById(restaurant_id);
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
         model.addAttribute("restaurant", restaurantDto);
         return "restaurant-detail";
     }
+
     @GetMapping("/restaurantsDish/{restaurant_id}")
-    public String restaurantDetailDish(@PathVariable("restaurant_id") long restaurant_id, Model model){
+    public String restaurantDetailDish(@PathVariable("restaurant_id") long restaurant_id, Model model) {
         UserDto user = new UserDto();
         RestaurantDto restaurantDto = restaurantService.findRestaurantById(restaurant_id);
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
@@ -119,14 +121,20 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurants/{restaurant_id}/delete")
-    public String restaurantDelete(@PathVariable("restaurant_id") Long restaurant_id)
-    {
+    public String restaurantDelete(@PathVariable("restaurant_id") Long restaurant_id) {
         restaurantService.delete(restaurant_id);
         return "redirect:/restaurants";
     }
 
     @GetMapping("/restaurants-search")
-    public String searchRestaurant(@RequestParam(value="query") String query, Model model){
+    public String searchRestaurant(@RequestParam(value = "query") String query, Model model) {
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if (username != null) {
+            user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("user", user);
         List<RestaurantDto> restaurantDtoList = restaurantService.searchRestaurant(query);
         model.addAttribute("restaurant", restaurantDtoList);
         return "restaurant-list";
@@ -136,8 +144,8 @@ public class RestaurantController {
     public String chartOfRestaurants(Model model) {
         UserDto user = new UserDto();
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);

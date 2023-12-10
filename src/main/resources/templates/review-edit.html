@@ -3,71 +3,72 @@
       layout:decorate="~{layout}">
 <body class="d-flex flex-column h-100 bg-light">
 <main class="flex-shrink-0">
-  <!-- Projects Section-->
-  <section layout:fragment="body" class="py-5">
-    <div class="container">
-      <form role="form"
-            method="post"
-            th:action="@{/reviews/{review_id}/edit(review_id=${review_id})}"
-            th:object="${review}">
-        <div class="form-group">
-          <label for="rating">Оценка ресторану</label>
-          <input type="number"
-                 min="1"
-                 max="5"
-                 class="form-control"
-                 id="rating"
-                 name="rating"
-                 th:field="*{rating}"
-                 placeholder="1-5">
-          <p th:if="${#fields.hasErrors('rating')}" class="text-danger" th:errors="*{rating}"></p>
-        </div>
-        <div class="form-group">
-          <label for="advantages">Достоинства</label>
-          <input type="text"
-                 class="form-control"
-                 id="advantages"
-                 name="advantages"
-                 th:field="*{advantages}"
-                 placeholder="Достоинства">
-          <p th:if="${#fields.hasErrors('advantages')}" class="text-danger" th:errors="*{advantages}"></p>
-        </div>
-        <div class="form-group">
-          <label for="disadvantages">Недостатки</label>
-          <input type="text"
-                 class="form-control"
-                 id="disadvantages"
-                 name="v"
-                 th:field="*{disadvantages}"
-                 placeholder="Недостатки">
-          <p th:if="${#fields.hasErrors('disadvantages')}" class="text-danger" th:errors="*{disadvantages}"></p>
-        </div>
-        <div class="form-group">
-          <label for="comment">Комментарий</label>
-          <textarea
-                  type="text"
-                  class="form-control"
-                  id="comment"
-                  name="comment"
-                  rows="3"
-                  th:field="*{comment}"
-                  placeholder="Комментарий">
+    <!-- Projects Section-->
+    <section layout:fragment="body" class="py-5">
+        <div class="container">
+            <form role="form"
+                  method="post"
+                  th:action="@{/reviews/{review_id}/edit(review_id=${review_id})}"
+                  th:object="${review}">
+                <div class="form-group my-5">
+                    <label for="rating">Оценка ресторану</label>
+                    <input type="number"
+                           min="1"
+                           max="5"
+                           class="form-control"
+                           id="rating"
+                           name="rating"
+                           th:field="*{rating}"
+                           placeholder="1-5">
+                    <p th:if="${#fields.hasErrors('rating')}" class="text-danger" th:errors="*{rating}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="advantages">Достоинства</label>
+                    <input type="text"
+                           class="form-control"
+                           id="advantages"
+                           name="advantages"
+                           th:field="*{advantages}"
+                           placeholder="Достоинства">
+                    <p th:if="${#fields.hasErrors('advantages')}" class="text-danger" th:errors="*{advantages}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="disadvantages">Недостатки</label>
+                    <input type="text"
+                           class="form-control"
+                           id="disadvantages"
+                           name="v"
+                           th:field="*{disadvantages}"
+                           placeholder="Недостатки">
+                    <p th:if="${#fields.hasErrors('disadvantages')}" class="text-danger"
+                       th:errors="*{disadvantages}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Комментарий</label>
+                    <textarea
+                            type="text"
+                            class="form-control"
+                            id="comment"
+                            name="comment"
+                            rows="3"
+                            th:field="*{comment}"
+                            placeholder="Комментарий">
           </textarea>
-          <p th:if="${#fields.hasErrors('comment')}" class="text-danger" th:errors="*{comment}"></p>
+                    <p th:if="${#fields.hasErrors('comment')}" class="text-danger" th:errors="*{comment}"></p>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="review_imgurl">Url фото заказа</label>
+                    <input type="text"
+                           class="form-control"
+                           id="review_imgurl"
+                           name="review_imgurl"
+                           th:field="*{review_imgurl}"
+                           placeholder="Ссылка на фото">
+                </div>
+                <button type="submit" class="btn btn-primary">Обновить отзыв</button>
+            </form>
         </div>
-        <div class="form-group mb-3">
-          <label for="review_imgurl">Url фото заказа</label>
-          <input type="text"
-                 class="form-control"
-                 id="review_imgurl"
-                 name="review_imgurl"
-                 th:field="*{review_imgurl}"
-                 placeholder="Ссылка на фото">
-        </div>
-        <button type="submit" class="btn btn-primary">Обновить отзыв</button>
-      </form>
-    </div>
-  </section>
+    </section>
 </main>
 </body>
 </html>

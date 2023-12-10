@@ -1,41 +1,51 @@
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultrag.net.nz//thymeleaf/layout"
+      xmlns:layout="http://www.ultrag.net.nz//thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout}">
 <body class="d-flex flex-column bg-light">
 <!-- Projects Section-->
-<section layout:fragment="body" >
-  <!-- Page header with logo and tagline-->
-  <header class="py-5 bg-light border-bottom mb-4">
-    <div class="container">
-      <div class="text-center my-5">
-        <h1 class="fw-bolder">Блюдо</h1>
-      </div>
-    </div>
-  </header>
-  <!-- Page content-->
-  <div class="container">
-    <div class="row">
-      <!-- Blog entries-->
-      <div class="col-lg-8">
-        <!-- Featured blog post-->
-        <div class="card mb-4">
-          <p><img class="card-img-top" th:src="${dish.dish_imgurl}" alt="..." /></p>
-          <div class="card-body">
-            <div class="small text-muted"></div>
-            <h2 class="card-title">Информация</h2>
-            <p class="card-text" th:text="'Название :'+${dish.name}"></p>
-            <p class="card-text" th:text="'Цена: ' + ${dish.price} + ' руб'"></p>
-            <p class="card-text" th:text="'Описание :'+${dish.description}"></p>
-            <div th:if="${user.userRole}">
-              <a class="btn btn-outline-dark"
-                 th:href="@{/dishes/{dish_id}/edit(dish_id=${dish.id})}">Отредактировать</a>
-              <a class="btn btn-outline-primary" th:href="@{/dishes/{dish_id}/delete(dish_id=${dish.id})}">Удалить запись</a>
+<section layout:fragment="body">
+    <!-- Page header with logo and tagline-->
+    <header class="py-5 bg-light border-bottom mb-4">
+        <div class="container">
+            <div class="text-center my-5">
+                <h1 class="fw-bolder text-gradient">Блюдо</h1>
             </div>
-          </div>
         </div>
-      </div>
+    </header>
+    <!-- Page content-->
+    <div class="container my-5">
+        <div class="row gx-5 justify-content-center">
+            <!-- Blog entries-->
+            <div class="col-lg-11 col-xl-9 col-xxl-8">
+                <!-- Featured blog post-->
+                <div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+                    <p><img class="card-img-top img-fluid" th:src="${dish.dish_imgurl}" alt="..."/></p>
+                    <div class="card-body">
+                        <div class="small text-muted"></div>
+                        <h2 class="card-title text-center">Информация</h2>
+                        <p class="advantages mb-2 text-justify col-8" th:text="'Название: '+${dish.name}"></p>
+                        <p class="advantages mb-2 text-justify col-8" th:text="'Цена: ' + ${dish.price} + ' руб'"></p>
+                        <div class="disadvantages mb-2 font-weight-bold col-8 text-left">Описание:</div>
+                        <div class="disadvantages mb-2 text-justify col-8"
+                             th:text="${dish.description}"></div>
+                        <div class="my-2" sec:authorize="principal.username eq 'admin'">
+                            <button type="button" id="menuList"
+                                    class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center">
+                                <span class="bi bi-arrow-right" style="font-size: 20px;"></span>
+                            </button>
+                            <div id="submenuList" class="d-none bg-light p-3 shadow"
+                                 style="margin-top: 10px; border-radius: 10px;">
+                                <a class="btn btn-outline-dark btn-sm"
+                                   th:href="@{/dishes/{dish_id}/edit(dish_id=${dish.id})}">Отредактировать</a>
+                                <a class="btn btn-outline-dark btn-sm"
+                                   th:href="@{/dishes/{dish_id}/delete(dish_id=${dish.id})}">Удалить запись</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 </body>
 </html>

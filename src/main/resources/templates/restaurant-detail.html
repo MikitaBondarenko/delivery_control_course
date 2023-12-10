@@ -2,60 +2,115 @@
       xmlns:layout="http://www.ultrag.net.nz//thymeleaf/layout"
       layout:decorate="~{layout}">
 <body class="d-flex flex-column bg-light">
-  <!-- Projects Section-->
-  <section layout:fragment="body" >
+<!-- Projects Section-->
+<section layout:fragment="body">
     <!-- Page header with logo and tagline-->
     <header class="py-5 bg-light border-bottom mb-4">
-      <div class="container">
-        <div class="text-center my-5">
-          <h1 class="fw-bolder">Ресторан</h1>
-          <p class="lead mb-0" th:text="${restaurant.restaurant_name}"> </p>
+        <div class="container">
+            <div class="text-center my-3">
+                <h1 class="fw-bolder text-gradient ">Ресторан</h1>
+                <p class="lead mb-0 text-gradient fs-4" th:text="${restaurant.restaurant_name}"></p>
+                <div class="d-flex justify-content-center small text-warning my-3">
+                    <div th:each="iteration : ${#numbers.sequence(1, restaurant.restaurant_rating)}">
+                        <div class="bi-star-fill"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </header>
     <!-- Page content-->
-    <div class="container">
-      <div class="row">
-        <!-- Blog entries-->
-        <div class="col-lg-8">
-          <!-- Featured blog post-->
-          <div class="card mb-4">
-            <p><img class="card-img-top" th:src="${restaurant.restaurant_imgurl}" alt="..." /></p>
-            <div class="card-body">
-              <div class="small text-muted"></div>
-              <h2 class="card-title">Информация</h2>
-              <p class="card-text" th:text="${restaurant.restaurant_address}"></p>
-              <p class="card-text" th:text="${restaurant.restaurant_phone}"></p>
-              <a class="btn btn-outline-primary" th:href="'http://'+ ${restaurant.restaurant_site}" target="_blank">Сайт ресторана</a>
-              <a class="btn btn-outline-primary" th:href="@{/restaurantsDish/{restaurant_id}(restaurant_id=${restaurant.id})}" >Меню ресторана</a>
-              <div th:if="${(user.id == restaurant.created_by.id) || user.userRole}">
-                <a class="btn btn-outline-dark"
-                   th:href="@{/restaurants/{restaurant_id}/edit(restaurant_id=${restaurant.id})}">Отредактировать</a>
-                <a class="btn btn-outline-primary" th:href="@{/restaurants/{restaurant_id}/delete(restaurant_id=${restaurant.id})}">Удалить запись</a>
-              </div>
-                <a class="btn btn-outline-primary" th:href="@{/reviews/{restaurant_id}/new(restaurant_id=${restaurant.id})}">Добавить отзыв</a>
-            </div>
-          </div>
-          <!-- Nested row for non-featured blog posts-->
-          <div class="row">
-            <div class="col-lg-6">
-              <!-- Blog post-->
-              <div th:each="review: ${restaurant.reviewDtoList}" class="card mb-4">
-                <p><img class="card-img-top" th:src="${review.review_imgurl}" width="300" height="400" alt="..." /></p>
-                <div class="card-body">
-                  <div th:text="${review.updatedOn}" class="small text-muted"></div>
-                  <h2 th:text="'☆' + ${review.rating} + '/5'" class="card-title h4"></h2>
-                  <p th:text="'+ :' +${review.advantages}" class="card-text"></p>
-                  <p th:text="'- :'+${review.disadvantages}" class="card-text"></p>
-                  <p th:text="'Написан: '+${review.created_by.username}" class="card-text"></p>
-                  <a class="btn btn-primary" th:href="@{/reviews/{review_id}(review_id=${review.id})}">Подробнее</a>
+    <div class="container my-5">
+        <div class="row gx-5 justify-content-center">
+            <!-- Blog entries-->
+            <div class="col-lg-11 col-xl-9 col-xxl-8">
+                <!-- Featured blog post-->
+                <div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+                    <div class="card-body p-0">
+                        <div class="d-flex align-items-center">
+                            <div class="p-5">
+                                <h2 class="fw-bolder ">Информация</h2>
+                                <p class="card-text" th:text="${restaurant.restaurant_address}"></p>
+                                <p class="card-text" th:text="${restaurant.restaurant_phone}"></p>
+                                <div>
+                                    <button type="button" id="menuList"
+                                            class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center">
+                                        <span class="bi bi-arrow-right" style="font-size: 20px;"></span>
+                                    </button>
+                                    <div id="submenuList" class="d-none bg-light p-3 shadow"
+                                         style="margin-top: 10px; border-radius: 10px;">
+                                        <a class="btn btn-outline-dark btn-sm"
+                                           th:href="'http://'+ ${restaurant.restaurant_site}" target="_blank">Сайт
+                                            ресторана</a>
+                                        <a class="btn btn-outline-dark btn-sm"
+                                           th:href="@{/restaurantsDish/{restaurant_id}(restaurant_id=${restaurant.id})}"
+                                        >Меню ресторана</a>
+                                        <div th:if="${(user.id == restaurant.created_by.id) || user.userRole}">
+                                            <a class="btn btn-outline-dark btn-sm"
+                                               th:href="@{/restaurants/{restaurant_id}/edit(restaurant_id=${restaurant.id})}">Отредактировать</a>
+                                            <a class="btn btn-outline-dark btn-sm"
+                                               th:href="@{/restaurants/{restaurant_id}/delete(restaurant_id=${restaurant.id})}">Удалить
+                                                запись</a>
+                                        </div>
+                                        <div th:if="${(user.surname != null and !#strings.isEmpty(user.surname)) and
+                                         (user.firstname != null and !#strings.isEmpty(user.firstname)) and
+                                         (user.address != null and !#strings.isEmpty(user.address)) and
+                                         (user.phone != null and !#strings.isEmpty(user.phone))}">
+                                            <a class="btn btn-outline-dark btn-sm"
+                                               th:href="@{/reviews/{restaurant_id}/new(restaurant_id=${restaurant.id})}">Добавить
+                                                отзыв</a>
+                                        </div>
+                                        <div th:unless="${(user.surname != null and !#strings.isEmpty(user.surname)) and
+                                         (user.firstname != null and !#strings.isEmpty(user.firstname)) and
+                                         (user.address != null and !#strings.isEmpty(user.address)) and
+                                         (user.phone != null and !#strings.isEmpty(user.phone))}">
+                                            <a class="btn btn-outline-dark btn-sm" onclick="profileIsEmpty()">Добавить
+                                                отзыв</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <img class="img-fluid" th:src="${restaurant.restaurant_imgurl}" alt="..."/>
+                        </div>
+                    </div>
                 </div>
-              </div>
+
+                <!-- Nested row for non-featured blog posts-->
+                <div class="row">
+                    <div class="owl-carousel owl-theme">
+                        <div th:each="review: ${restaurant.reviewDtoList}" class="owl-item mb-4">
+                            <div class="card d-flex flex-column align-items-center">
+                                <div class="d-flex justify-content-center small text-warning my-3">
+                                    <div th:each="iteration : ${#numbers.sequence(1, review.rating)}">
+                                        <div class="bi-star-fill"></div>
+                                    </div>
+                                </div>
+                                <div class="advantages mb-2 font-weight-bold col-8 text-left">Достоинства:</div>
+                                <div class="advantages mb-2 text-justify col-8"
+                                     th:text="${review.advantages}"></div>
+                                <div class="disadvantages mb-2 font-weight-bold col-8 text-left">Недостатки:</div>
+                                <div class="disadvantages mb-2 text-justify col-8"
+                                     th:text="${review.disadvantages}"></div>
+                                <hr class="col-8 my-2">
+                                <div class="d-flex flex-row profile pt-2 mt-auto">
+                                    <img th:src="${review.created_by.avatarImg}" alt="" class="rounded-circle">
+                                    <div class="d-flex flex-column pl-2 col-8">
+                                        <div class="name">
+                                            <span th:text="'Написан: ' + ${review.created_by.firstname + ' ' + review.created_by.surname}"
+                                                  class="mr-1"></span>
+                                        </div>
+                                        <p th:text="${review.created_by.email}" class="text-muted designation"></p>
+                                    </div>
+                                </div>
+                                <hr class="col-8 my-2">
+                                <a class="btn btn-outline-dark mt-auto col-8 my-2"
+                                   th:href="@{/reviews/{review_id}(review_id=${review.id})}">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </section>
+</section>
 </body>
 </html>

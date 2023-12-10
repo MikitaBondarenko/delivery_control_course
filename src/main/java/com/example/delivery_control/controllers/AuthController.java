@@ -16,17 +16,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
 @AllArgsConstructor
 @Controller
 public class AuthController {
     private final UserService userService;
 
     @GetMapping("/login")
-    public String loginPage(Model model){
+    public String loginPage(Model model) {
         UserDto user = new UserDto();
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
@@ -44,16 +45,16 @@ public class AuthController {
     public String register(@Valid @ModelAttribute("user") RegistrationDto user,
                            BindingResult result, Model model) {
         UserDto existingUsersEmail = userService.findByEmail(user.getEmail());
-        if(existingUsersEmail != null && existingUsersEmail.getEmail() != null
-                                      && !existingUsersEmail.getEmail().isEmpty()){
+        if (existingUsersEmail != null && existingUsersEmail.getEmail() != null
+                && !existingUsersEmail.getEmail().isEmpty()) {
             return "redirect:/register?fail";
         }
         UserDto existingUserUsername = userService.findByUsername(user.getUsername());
-        if(existingUserUsername != null && existingUserUsername.getUsername() != null
-                && !existingUserUsername.getUsername().isEmpty()){
+        if (existingUserUsername != null && existingUserUsername.getUsername() != null
+                && !existingUserUsername.getUsername().isEmpty()) {
             return "redirect:/register?fail";
         }
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             model.addAttribute("user", user);
             return "register";
         }
@@ -61,23 +62,23 @@ public class AuthController {
         return "redirect:/restaurants?success";
     }
 
-    @PostMapping("*/userInfoSave")
-    public  String editUserInfo(@Valid @ModelAttribute("user") UserDto user,
-                                BindingResult result, Model model, HttpServletRequest request){
-        if(result.hasErrors()){
+    @PostMapping("/userInfoSave")
+    public String editUserInfo(@Valid @ModelAttribute("user") UserDto user,
+                               BindingResult result, Model model, HttpServletRequest request) {
+        if (result.hasErrors()) {
             model.addAttribute("user", user);
             return "restaurant-list";
         }
         UserDto userToUpdate = new UserDto();
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            userToUpdate=userService.findByUsername(username);
-        }
-        else return "restaurant-list";
+        if (username != null) {
+            userToUpdate = userService.findByUsername(username);
+        } else return "restaurant-list";
         user.setId(userToUpdate.getId());
         user.setEmail(userToUpdate.getEmail());
         user.setPassword(userToUpdate.getPassword());
         user.setUsername(userToUpdate.getUsername());
+        if (user.getAvatarImg().isEmpty()) user.setAvatarImg(userToUpdate.getAvatarImg());
         userService.updateUser(user);
 
         return "redirect:/restaurants";
