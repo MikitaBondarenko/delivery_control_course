@@ -8,8 +8,7 @@
         <div class="container my-5">
             <form role="form"
                   method="post"
-                  th:action="@{/dishes/{dish_id}/edit(dish_id=${dish_id})}"
-                  th:object="${dish}">
+                  th:action="@{/dishes/{dish_id}/edit(dish_id=${dish_id})}">
                 <div class="form-group">
                     <label for="name">Название блюда</label>
                     <input type="text"

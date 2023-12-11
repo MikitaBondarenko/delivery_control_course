@@ -7,6 +7,7 @@ import com.example.delivery_control.models.Dish;
 import com.example.delivery_control.models.Review;
 import com.example.delivery_control.security.SecurityUtill;
 import com.example.delivery_control.service.DishService;
+import com.example.delivery_control.service.OrderService;
 import com.example.delivery_control.service.ReviewService;
 import com.example.delivery_control.service.UserService;
 import jakarta.validation.Valid;
@@ -21,18 +22,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+
 @AllArgsConstructor
 @Controller
 public class DishController {
     private final DishService dishService;
     private final UserService userService;
+    private final OrderService orderService;
+
     @GetMapping("/dishes/{restaurant_id}/new")
-    public String createDishForm(@PathVariable("restaurant_id") Long restaurant_id, Model model)
-    {
+    public String createDishForm(@PathVariable("restaurant_id") Long restaurant_id, Model model) {
         UserDto user = new UserDto();
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
@@ -44,11 +47,10 @@ public class DishController {
 
     @PostMapping("/dishes/{restaurant_id}")
     public String createDish(@PathVariable("restaurant_id") Long restaurant_id,
-                               @Valid
-                               @ModelAttribute("dish") DishDto dishDto,
-                               BindingResult result, Model model)
-    {
-        if(result.hasErrors()){
+                             @Valid
+                             @ModelAttribute("dish") DishDto dishDto,
+                             BindingResult result, Model model) {
+        if (result.hasErrors()) {
             model.addAttribute("dish", dishDto);
             return "dish-create";
         }
@@ -57,12 +59,12 @@ public class DishController {
     }
 
     @GetMapping("/dishes/{dish_id}")
-    public String viewReview(@PathVariable("dish_id") Long dish_id, Model model){
+    public String viewReview(@PathVariable("dish_id") Long dish_id, Model model) {
         UserDto user = new UserDto();
-        DishDto dishDto =  dishService.findByDishId(dish_id);
+        DishDto dishDto = dishService.findByDishId(dish_id);
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
@@ -70,26 +72,40 @@ public class DishController {
         return "dish-detail";
     }
 
-    @GetMapping("/dishes/{dish_id}/edit")
-    public String editDish(@PathVariable("dish_id") long dish_id, Model  model){
+    @PostMapping("/dishes/{dish_id}/addToCart")
+    public String addToCart(@PathVariable("dish_id") long dish_id, Model model) {
+        DishDto dishDto = dishService.findByDishId(dish_id);
         UserDto user = new UserDto();
         String username = SecurityUtill.getSessionUser();
-        if(username != null){
-            user=userService.findByUsername(username);
+        if (username != null) {
+            user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("dish", dishDto);
+        orderService.addDishToCart(user.getUsername(), dish_id, 2);
+        return "redirect:/restaurantsDish/" + dishDto.getRestaurant().getId();
+    }
+
+    @GetMapping("/dishes/{dish_id}/edit")
+    public String editDish(@PathVariable("dish_id") long dish_id, Model model) {
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if (username != null) {
+            user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
         model.addAttribute("user", user);
         DishDto dishDto = dishService.findByDishId(dish_id);
-        model.addAttribute("dish" , dishDto);
+        model.addAttribute("dish", dishDto);
         return "dish-edit";
     }
 
     @PostMapping("/dishes/{dish_id}/edit")
     public String updateDish(@PathVariable("dish_id") long dish_id,
-                               @Valid
-                               @ModelAttribute("dish") DishDto dishDto,
-                               BindingResult result, Model model){
-        if(result.hasErrors()){
+                             @Valid
+                             @ModelAttribute("dish") DishDto dishDto,
+                             BindingResult result, Model model) {
+        if (result.hasErrors()) {
             model.addAttribute("dish", dishDto);
             return "dish-edit";
         }
@@ -101,10 +117,10 @@ public class DishController {
     }
 
     @GetMapping("/dishes/{dish_id}/delete")
-    public  String deleteDish(@PathVariable("dish_id") long dish_id,
-                                @ModelAttribute("dish") DishDto dishDto){
+    public String deleteDish(@PathVariable("dish_id") long dish_id,
+                             @ModelAttribute("dish") DishDto dishDto) {
         dishDto = dishService.findByDishId(dish_id);
         dishService.deleteDish(dish_id);
-        return  "redirect:/restaurantsDish/" + dishDto.getRestaurant().getId();
+        return "redirect:/restaurantsDish/" + dishDto.getRestaurant().getId();
     }
 }

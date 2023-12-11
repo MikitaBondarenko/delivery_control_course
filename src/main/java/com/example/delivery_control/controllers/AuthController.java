@@ -2,6 +2,7 @@ package com.example.delivery_control.controllers;
 
 import com.example.delivery_control.dto.RegistrationDto;
 import com.example.delivery_control.dto.UserDto;
+import com.example.delivery_control.models.Cart;
 import com.example.delivery_control.models.UserEntity;
 import com.example.delivery_control.security.SecurityUtill;
 import com.example.delivery_control.service.UserService;
@@ -36,8 +37,15 @@ public class AuthController {
 
     @GetMapping("/register")
     public String getRegisterForm(Model model) {
-        RegistrationDto user = new RegistrationDto();
+        UserDto user = new UserDto();
+        String username = SecurityUtill.getSessionUser();
+        if (username != null) {
+            user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
         model.addAttribute("user", user);
+        RegistrationDto userDto = new RegistrationDto();
+        model.addAttribute("userDto", userDto);
         return "register";
     }
 

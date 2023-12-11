@@ -84,7 +84,16 @@
                                       th:text="'Цена: ' + ${dish.price} + ' руб'"></span>
                             </div>
                         </div>
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent d-flex justify-content-between align-items-center">
+                            <form role="form"
+                                  method="post"
+                                  th:action="@{/dishes/{dish_id}/addToCart(dish_id=${dish.id})}"
+                                  th:object="${dish}">
+                                <button type="submit"
+                                        class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center">
+                                    <span class="bi bi-cart" style="font-size: 20px;"></span>
+                                </button>
+                            </form>
                             <div class="text-center">
                                 <a class="btn btn-outline-dark mt-auto"
                                    th:href="@{/dishes/{dish_id}(dish_id=${dish.id})}">Подробнее</a>

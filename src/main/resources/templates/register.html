@@ -11,19 +11,21 @@
             }
 
             @media screen and (max-width: 450px) {
-                .login-form{
+                .login-form {
                     margin-top: 10%;
                 }
-                .register-form{
+
+                .register-form {
                     margin-top: 10%;
                 }
             }
-            @media screen and (min-width: 768px){
-                .main{
+
+            @media screen and (min-width: 768px) {
+                .main {
                     margin-left: 30%;
                 }
 
-                .sidenav{
+                .sidenav {
                     width: 40%;
                     position: fixed;
                     z-index: 1;
@@ -35,9 +37,10 @@
         <div class="main mt-5">
             <div class="col-md-6 col-sm-12">
                 <div th:if="${param.fail}" class="alert alert-success">
-                    Такой пользователь уже существует!</div>
+                    Такой пользователь уже существует!
+                </div>
                 <div class="login-form">
-                    <form method="post" role="form" th:action="@{/register/save}" th:object="${user}">
+                    <form method="post" role="form" th:action="@{/register/save}" th:object="${userDto}">
                         <div class="form-group">
                             <label>Username</label>
                             <input
@@ -64,8 +67,8 @@
                                     placeholder="Password"
                                     th:field="*{password}">
                         </div>
-                        <p th:if="${#fields.hasErrors('password')}" class="text-danger"th:errors="*{password}"></p>
-                        <button  type="submit" class="btn btn-outline-dark mt-2">Регистрация</button>
+                        <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}"></p>
+                        <button type="submit" class="btn btn-outline-dark mt-2">Регистрация</button>
                     </form>
                 </div>
                 <a th:href="@{/login}" class="btn btn-outline-dark mt-2">Уже есть аккаунт?</a>

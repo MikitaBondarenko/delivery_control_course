@@ -3,6 +3,9 @@ package com.example.delivery_control.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -17,6 +20,6 @@ public class Cart {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity owner;
 
-    @OneToOne(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private CartItem cartItem;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CartItem> cartItemList = new ArrayList<>();
 }

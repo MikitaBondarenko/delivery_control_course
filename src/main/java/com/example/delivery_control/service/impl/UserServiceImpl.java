@@ -1,14 +1,14 @@
 package com.example.delivery_control.service.impl;
 
 import com.example.delivery_control.Mapper.UserMapper;
+import com.example.delivery_control.Repository.CartItemRepository;
+import com.example.delivery_control.Repository.CartRepository;
 import com.example.delivery_control.Repository.RoleRepository;
 import com.example.delivery_control.Repository.UserRepository;
 import com.example.delivery_control.dto.RegistrationDto;
 import com.example.delivery_control.dto.RestaurantDto;
 import com.example.delivery_control.dto.UserDto;
-import com.example.delivery_control.models.Restaurant;
-import com.example.delivery_control.models.Role;
-import com.example.delivery_control.models.UserEntity;
+import com.example.delivery_control.models.*;
 import com.example.delivery_control.security.SecurityUtill;
 import com.example.delivery_control.service.UserService;
 import lombok.AllArgsConstructor;
@@ -26,6 +26,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Override
     public void saveUser(RegistrationDto registrationDto) {
@@ -36,6 +38,10 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByName("USER");
         user.setRoles(Arrays.asList(role));
         userRepository.save(user);
+        Cart cart = new Cart();
+        UserEntity userCart = userRepository.findByUsername(user.getUsername());
+        cart.setOwner(userCart);
+        cartRepository.save(cart);
     }
 
     @Override
@@ -43,7 +49,6 @@ public class UserServiceImpl implements UserService {
         UserEntity user = mapToUser(userDto);
         userRepository.save(user);
     }
-
 
     @Override
     public UserDto findByEmail(String email) {
@@ -58,8 +63,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findByUsername(String username) {
-        UserEntity user =userRepository.findByUsername(username);
-        if(user == null){
+        UserEntity user = userRepository.findByUsername(username);
+        if (user == null) {
             return null;
         }
         UserDto userDto = UserMapper.mapToUserDto(user);
