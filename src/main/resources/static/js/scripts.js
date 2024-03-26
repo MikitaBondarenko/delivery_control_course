@@ -55,3 +55,26 @@ function profileIsEmpty() {
     alert("Чтобы оставить отзыв, вы должны заполнить данные в профиле!");
     
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Получаем ссылки на все чекбоксы и кнопку отправки формы
+    var checkboxes = document.querySelectorAll('input[name="category"]');
+    var submitButton = document.getElementById('submitButton');
+
+    // Функция, которая будет проверять, нужно ли разблокировать кнопку
+    function checkIfButtonShouldBeEnabled() {
+        var atLeastOneChecked = Array.from(checkboxes).some(function(checkbox) {
+            return checkbox.checked;
+        });
+        // Если хотя бы один чекбокс выбран, разблокируем кнопку отправки формы, иначе блокируем
+        submitButton.disabled = !atLeastOneChecked;
+    }
+
+    // Добавляем обработчик события изменения состояния каждого чекбокса
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', checkIfButtonShouldBeEnabled);
+    });
+
+    // Проверяем состояние чекбоксов при загрузке страницы
+    checkIfButtonShouldBeEnabled();
+});
