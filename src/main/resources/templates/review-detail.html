@@ -37,8 +37,21 @@
                         <div class="disadvantages mb-2 text-justify col-8"
                              th:text="${review.disadvantages}"></div>
                         <div class="disadvantages mb-2 font-weight-bold col-8 text-left">Комментарий:</div>
-                        <div class="disadvantages mb-2 text-justify col-8"
+                        <div class="disadvantages mb-4 text-justify col-8"
                              th:text="${review.comment}"></div>
+                        <div th:if="${(user.id == review.created_by.id) || user.userRole}">
+                            <button type="button" id="menuList"
+                                    class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center">
+                                <span class="bi bi-arrow-right" style="font-size: 20px;"></span>
+                            </button>
+                            <div id="submenuList" class="d-none bg-light p-3 shadow"
+                                 style="margin-top: 10px; border-radius: 10px;">
+                                <a class="btn btn-outline-dark btn-sm"
+                                   th:href="@{/reviews/{review_id}/edit(review_id=${review.id})}">Отредактировать</a>
+                                <a class="btn btn-outline-dark btn-sm"
+                                   th:href="@{/reviews/{review_id}/delete(review_id=${review.id})}">Удалить запись</a>
+                            </div>
+                        </div>
                         <hr class="col-8 my-2">
                         <div class="d-flex flex-row profile pt-2 mt-auto">
                             <img th:src="${review.created_by.avatarImg}" alt="" class="rounded-circle">
@@ -50,19 +63,7 @@
                                 <p th:text="${review.created_by.email}" class="text-muted designation"></p>
                                 <p class="card-text" th:text="${formattedDateTime}"></p>
                             </div>
-                            <div th:if="${(user.id == review.created_by.id) || user.userRole}">
-                                <button type="button" id="menuList"
-                                        class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center">
-                                    <span class="bi bi-arrow-right" style="font-size: 20px;"></span>
-                                </button>
-                                <div id="submenuList" class="d-none bg-light p-3 shadow"
-                                     style="margin-top: 10px; border-radius: 10px;">
-                                 <a class="btn btn-outline-dark btn-sm"
-                                     th:href="@{/reviews/{review_id}/edit(review_id=${review.id})}">Отредактировать</a>
-                                <a class="btn btn-outline-dark btn-sm"
-                                    th:href="@{/reviews/{review_id}/delete(review_id=${review.id})}">Удалить запись</a>
-                                </div>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

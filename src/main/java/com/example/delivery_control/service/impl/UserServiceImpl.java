@@ -47,7 +47,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(UserDto userDto) {
         UserEntity user = mapToUser(userDto);
+        if(user.getUsername().equals("admin")){
+            Role role = roleRepository.findByName("ADMIN");
+            user.setRoles(Arrays.asList(role));
+        }
+        else {
+            Role role = roleRepository.findByName("USER");
+            user.setRoles(Arrays.asList(role));
+        }
+        UserEntity userCart = userRepository.findByUsername(user.getUsername());
+        Cart cart = cartRepository.findByOwner(userCart);
+        cartRepository.save(cart);
         userRepository.save(user);
+
     }
 
     @Override

@@ -31,6 +31,6 @@ public class UserEntity {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")}
     )
     private List<Role> roles = new ArrayList<>();
-    @OneToOne(mappedBy = "owner", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToOne(mappedBy = "owner", cascade = CascadeType.REMOVE)
     private Cart cart;
 }

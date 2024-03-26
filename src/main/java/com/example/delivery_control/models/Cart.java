@@ -20,6 +20,6 @@ public class Cart {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity owner;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
     private List<CartItem> cartItemList = new ArrayList<>();
 }

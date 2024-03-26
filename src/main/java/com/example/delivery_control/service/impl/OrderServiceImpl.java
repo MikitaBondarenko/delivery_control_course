@@ -1,5 +1,6 @@
 package com.example.delivery_control.service.impl;
 
+import com.example.delivery_control.Mapper.DishMapper;
 import com.example.delivery_control.Repository.CartItemRepository;
 import com.example.delivery_control.Repository.CartRepository;
 import com.example.delivery_control.Repository.DishRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.delivery_control.Mapper.DishMapper.mapToDishDto;
 
@@ -32,28 +34,36 @@ public class OrderServiceImpl implements OrderService {
         Dish dish = dishRepository.findById(dish_id).get();
         UserEntity userCart = userRepository.findByUsername(username);
         Cart cart = cartRepository.findByOwner(userCart);
-        CartItem existcartItem = existingDish(cart, dish);
+        CartItem existcartItem = existingCartItem(cart, dish);
         if (existcartItem == null) {
             CartItem cartItem = new CartItem();
             cartItem.setCart(cart);
             List<Dish> dishList = new ArrayList<>();
-            for (int i = 0; i < dishquantity; i++) {
-                dishList.add(dish);
-            }
+            dishList.add(dish);
+            cartItem.setQuantityOfDish(dishquantity);
             cartItem.setDishesList(dishList);
             cartItemRepository.save(cartItem);
         } else {
-            List<Dish> dishList = existcartItem.getDishesList();
-            for (int i = 0; i < dishquantity; i++) {
-                dishList.add(dish);
-            }
-            existcartItem.setDishesList(dishList);
+            int currentQuantity = existcartItem.getQuantityOfDish();
+            existcartItem.setQuantityOfDish(currentQuantity+dishquantity);
             cartItemRepository.save(existcartItem);
         }
 
     }
+    @Override
+    public List<DishDto> findAllCartItemDishes(String username) {
+        List<Dish> dishList = new ArrayList<>();
+        UserEntity userCart = userRepository.findByUsername(username);
+        Cart cart = cartRepository.findByOwner(userCart);
+        List<CartItem> existcartItemList = cartItemRepository.findByCart(cart);
+        for (CartItem cartItem : existcartItemList) {
+            List<Dish> cartItemDishes = cartItem.getDishesList();
+            dishList.addAll(cartItemDishes);
+        }
+        return dishList.stream().map(DishMapper::mapToDishDto).collect(Collectors.toList());
+    }
 
-    public CartItem existingDish(Cart cart, Dish dish) {
-        return cartItemRepository.findByCartAndAndDishesList(cart, dish);
+    public CartItem existingCartItem(Cart cart, Dish dish) {
+        return cartItemRepository.findByCartAndDishesList(cart, dish);
     }
 }

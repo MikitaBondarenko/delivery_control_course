@@ -82,7 +82,7 @@ public class DishController {
             model.addAttribute("user", user);
         }
         model.addAttribute("dish", dishDto);
-        orderService.addDishToCart(user.getUsername(), dish_id, 2);
+        orderService.addDishToCart(user.getUsername(), dish_id, 1);
         return "redirect:/restaurantsDish/" + dishDto.getRestaurant().getId();
     }
 
